@@ -1,0 +1,128 @@
+{
+  "settings": {
+    "refresh_interval": "1s",
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "index": {
+      "store.preload": [
+        "nvd",
+        "dvd"
+      ],
+      "sort.field": [
+        "update_time"
+      ],
+      "sort.order": [
+        "desc"
+      ],
+      "search.slowlog.threshold.query.warn": "500ms",
+      "search.slowlog.threshold.fetch.warn": "1s",
+      "indexing.slowlog.threshold.index.warn": "1s"
+    },
+    "analysis": {
+      "analyzer": {
+        "edge_ngram_analyzer": {
+          "tokenizer": "edge_ngram_tokenizer"
+        },
+        "ngram_analyzer": {
+          "tokenizer": "ngram_tokenizer"
+        },
+        "pinyin_analyzer": {
+          "tokenizer": "pinyin_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "pinyin_tokenizer": {
+          "type": "pinyin",
+          "keep_separate_first_letter": true,
+          "keep_full_pinyin": true,
+          "keep_original": true,
+          "limit_first_letter_length": 16,
+          "lowercase": true,
+          "remove_duplicated_term": true,
+          "ignore_pinyin_offset": false
+        },
+        "edge_ngram_tokenizer": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 18,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        },
+        "ngram_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 1,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "order_id": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "standard"
+      },
+      "order_id_suffix": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "standard"
+      },
+      "uid":{
+        "type": "keyword",
+        "doc_values": false
+      },
+      "names":{
+        "type": "text",
+        "analyzer": "ngram_analyzer",
+        "search_analyzer": "ngram_analyzer",
+        "fields": {
+          "pinyin":{
+            "type":"text",
+            "analyzer" : "pinyin_analyzer"
+          }
+        }
+      },
+      "product_ids": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "order_status": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "refund_status": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "shipping_type": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "pay_type": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "pay_type_name": {
+        "type": "keyword",
+        "doc_values": false
+      },
+      "pay_time": {
+        "type": "date"
+      },
+      "create_time": {
+        "type": "date"
+      },
+      "update_time": {
+        "type": "date"
+      }
+    }
+  }
+}
